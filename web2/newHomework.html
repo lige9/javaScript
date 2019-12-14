@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		#box1{
+			width: 1200px;
+			height: 390px;
+			/* border: 1px solid red; */
+			margin: auto;
+			/* background: lightblue; */
+			position: relative;
+			overflow: hidden;
+		}
+		.box3{
+			width: 8400px;
+			position: absolute;
+			left: -1200px;
+			margin-top: 10px;
+		}
+		.slide{
+			width: 1200px;
+			float: left;
+			overflow: hidden;
+		}
+		#box1>span{
+			display: block;
+			width: 30px;
+			height: 50px;
+			text-align: center;
+			cursor: pointer;
+			top: 175px;
+			line-height: 50px;
+			background: rgb(255,0,0);
+			font-size: 30px;
+			position: absolute;
+			opacity: 0;
+		}
+		#leftButton{
+			left: 30px;
+		}
+		#rightButton{
+			right: 30px;
+		}
+		.nav{
+			position: absolute;
+			left: 500px;
+			bottom: 20px;
+		}
+		.nav>li{
+			float: left;
+			width: 20px;
+			height: 20px;
+			background: lightgray;
+			cursor: pointer;
+			margin: 0 10px;
+			border-radius: 50%;
+		}
+		.nav .active{
+			background: red;
+			color: white;
+		}
+		.box4{
+			/* width: 1200px; */
+			height: 20px;
+			background: lightgray;
+			margin: 0 auto;
+			position: relative;
+			overflow: hidden;
+		}
+		.box4 div{
+			float: left;
+		}
+		.b{
+			height: 20px;
+			width: 1050px;
+			margin-left: 150px;
+			position: absolute;
+			/* border: 1px black solid; */
+			overflow: hidden;
+		}
+		.box2{
+			width: 1780px;
+			/* border: 1px black solid; */
+			left: -353px;
+			position: absolute;
+		}
+		.txt{
+			float: left;
+			width: 1400px;
+			color: red;
+			font-size: 13px;
+			/* border: 1px black solid; */
+		}
+		.txt1{
+			float: left;
+			width: 380px;
+			color: red;
+			font-size: 13px;
+			/* border: 1px black solid; */
+		}
+	</style>
+	<script src="animate.js"></script>
+</head>
+<body>
+	<div class="box4">
+		<div style="margin-left:130px">
+				<img src="images/a15.png">
+		</div>
+		<div class="b">
+			<div class="box2">
+				<div class="txt">[温馨提示]最近有不少不法分子在网上骗人，请大家注意！！！
+				</div>
+				<div class="txt1">[温馨提示]最近有不少不法分子在网上骗人，请大家注意！！！
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="box1">
+		<div class="box3">
+			<div class="slide"><img src="images/b5.png"></div>
+			<div class="slide"><img src="images/b1.png" title="1"></div>
+			<div class="slide"><img src="images/b2.png" title="2"></div>
+			<div class="slide"><img src="images/b3.png" title="3"></div>
+			<div class="slide"><img src="images/b4.png" title="4"></div>
+			<div class="slide"><img src="images/b5.png" title="5"></div>
+			<div class="slide"><img src="images/b1.png"></div>
+		</div>
+		<span id="leftButton"> < </span>
+		<span id="rightButton"> > </span>
+		<ul class="nav" id="nav">
+			<li class="active" align="center">1</li>
+			<li align="center">2</li>
+			<li align="center">3</li>
+			<li align="center">4</li>
+			<li align="center">5</li>
+		</ul>
+	</div>
+	<script>
+		var box1=document.getElementById("box1");
+		var box3=document.getElementsByClassName("box3");
+		var slide=document.getElementsByClassName("slide");
+		var leftButton=document.getElementById("leftButton");
+		var rightButton=document.getElementById("rightButton");
+		var navList=document.getElementById("nav").children;
+		var box2=document.getElementsByClassName("box2");
+		var txt=document.getElementsByClassName("txt");
+		var time=setInterval(function(){
+			var left=getStyle(box2[0],"left");
+			// console.log(left);
+			box2[0].style.left=(parseInt(left)-1)+"px";
+			if(parseInt(getStyle(box2[0],"left"))==-1780){
+				box2[0].style.left=-353+"px";
+			}
+		},20);
+		var index=1;
+		var flag=false;
+		function start(){
+			if(!flag){
+				flag=true;
+				index++;
+				change();
+				animate(box3[0],{left:-1200*index},function(){
+					if(index===6){
+						box3[0].style.left="-1200px";
+						index=1;
+					}
+					flag=false;
+				});
+			}
+		}
+		function prevous(){
+			if(!flag){
+				flag=true;
+				index--;
+				change();
+				animate(box3[0],{left:-1200*index},function(){
+					if(index===0){
+						box3[0].style.left="-6000px";
+						index=5;
+					}
+					flag=false;
+				});
+			}
+		}
+		var timer=setInterval(start,2000);
+		box1.onmouseover=function(){
+			animate(leftButton,{opacity:50});
+			animate(rightButton,{opacity:50});
+			clearInterval(timer);
+		}
+		box1.onmouseout=function(){
+			animate(leftButton,{opacity:0});
+			animate(rightButton,{opacity:0});
+			timer=setInterval(start,3000)
+		}
+		rightButton.onclick=start;
+		leftButton.onclick=prevous;
+		
+		for(var j=0;j<navList.length;j++){
+			navList[j].btn=j;
+			navList[j].onclick=function(){
+				// console.log(this.btn);
+				index=this.btn+1;
+				change();
+				// console.log(index);
+				animate(box3[0],{left:-1200*index});
+			}
+		}
+		function change(){
+			for(var j=0;j<navList.length;++j){
+				navList[j].className="";
+			}
+			if(index===6){
+				navList[0].className="active";
+			}
+			else if(index===0){
+				navList[4].className="active";
+			}
+			else{
+				navList[index-1].className="active";
+			}
+		}
+	</script>
+</body>
+</html>
